@@ -24,6 +24,7 @@ public enum MicropolisTool
 	FIRE(3, 500),
 	POLICE(3, 500),
 	STADIUM(4, 5000),
+	UNIVERSITY(4, 7000),
 	PARK(1, 10),
 	SEAPORT(4, 3000),
 	POWERPLANT(4, 3000),
@@ -68,6 +69,7 @@ public enum MicropolisTool
 		case POWERPLANT:
 		case NUCLEAR:
 		case AIRPORT:
+		case UNIVERSITY:
 			return new BuildingTool(engine, this, xpos, ypos);
 
 		default:
