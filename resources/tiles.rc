@@ -1015,7 +1015,7 @@
 962   university@32,0           (conducts)
 963   university@48,0           (conducts)
 964   university@0,16           (conducts)
-965   university@16,16    (zone)(conducts)(building=4x4)(behavior=STADIUM_EMPTY)(description=#18)
+965   university@16,16    (zone)(conducts)(building=4x4)
 966   university@32,16          (conducts)
 967   university@48,16          (conducts)
 968   university@0,32           (conducts)
