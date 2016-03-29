@@ -41,7 +41,8 @@ class MapScanner extends TileBehavior
 		STADIUM_EMPTY,
 		STADIUM_FULL,
 		AIRPORT,
-		SEAPORT;
+		SEAPORT,
+		UNIVERSITY;
 	}
 
 	@Override
@@ -83,6 +84,9 @@ class MapScanner extends TileBehavior
 			return;
 		case SEAPORT:
 			doSeaport();
+			return;
+		case UNIVERSITY:
+			doUniversity();
 			return;
 		default:
 			assert false;
@@ -312,6 +316,22 @@ class MapScanner extends TileBehavior
 		}
 	}
 
+	void doUniversity()
+	{
+		boolean powerOn = checkZonePower();
+		if ((city.cityTime % 16) == 0) {
+			repairZone(UNIVERSITY, 4);
+		}
+		int z;
+		if (powerOn) {
+			z = city.universityEffect;
+		} else {
+			z = 0;
+		}
+		
+		city.universityMap[ypos/2][xpos/2] += z;
+	}
+	
 	/**
 	 * Place hospital or church if needed.
 	 */

@@ -86,6 +86,8 @@ public class Micropolis
 	public int [][] fireRate;       //firestations reach- used for overlay graphs
 	int [][] policeMap;      //police stations- cleared and rebuilt each sim cycle
 	public int [][] policeMapEffect;//police stations reach- used for overlay graphs
+	
+	int [][] universityMap;  //universities- cleared and rebuilt each sim cycle
 
 	/** For each 8x8 section of city, this is an integer between 0 and 64,
 	 * with higher numbers being closer to the center of the city. */
@@ -177,6 +179,7 @@ public class Micropolis
 	int roadEffect = 32;
 	int policeEffect = 1000;
 	int fireEffect = 1000;
+	int universityEffect = 100;
 
 	int cashFlow; //net change in totalFunds in previous year
 
@@ -247,6 +250,8 @@ public class Micropolis
 		fireRate = new int[smY][smX];
 		comRate = new int[smY][smX];
 
+		universityMap = new int[hY][hX];		
+		
 		centerMassX = hX;
 		centerMassY = hY;
 	}
@@ -544,6 +549,7 @@ public class Micropolis
 			for (int x = 0; x < fireStMap[y].length; x++) {
 				fireStMap[y][x] = 0;
 				policeMap[y][x] = 0;
+				universityMap[y][x] = 0;
 			}
 		}
 	}
@@ -1135,7 +1141,7 @@ public class Micropolis
 
 	//power, terrain, land value
 	void ptlScan()
-	{
+	{		
 		final int qX = (getWidth()+3)/4;
 		final int qY = (getHeight()+3)/4;
 		int [][] qtem = new int[qY][qX];
@@ -1187,7 +1193,6 @@ public class Micropolis
 				{
 					//land value equation
 
-
 					int dis = 34 - getDisCC(x, y);
 					dis *= 4;
 					dis += terrainMem[y/2][x/2];
@@ -1195,6 +1200,10 @@ public class Micropolis
 					if (crimeMem[y][x] > 190) {
 						dis -= 20;
 					}
+					
+					// adds university to land value
+					dis += universityMap[y][x];
+					
 					if (dis > 250)
 						dis = 250;
 					if (dis < 1)
