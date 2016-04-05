@@ -215,6 +215,17 @@ public class OverlayMapView extends JComponent
 		}
 	}
 
+	private void drawUniversityRadius(Graphics gr)
+	{
+		int [][] A = engine.universityMapEffect;
+
+		for (int y = 0; y < A.length; y++) {
+			for (int x = 0; x < A[y].length; x++) {
+				maybeDrawRect(gr, getCI(A[y][x]),x*24,y*24,24,24);
+			}
+		}
+	}
+
 	private void maybeDrawRect(Graphics gr, Color col, int x, int y, int width, int height)
 	{
 		if (col != null) {
@@ -383,7 +394,7 @@ public class OverlayMapView extends JComponent
 		case FIRE_OVERLAY:
 			drawFireRadius(gr); break;
 		case CRIME_OVERLAY:
-			drawCrimeMap(gr); break;
+			drawCrimeMap(gr); drawUniversityRadius(gr); break;
 		case POLLUTE_OVERLAY:
 			drawPollutionMap(gr); break;
 		case GROWTHRATE_OVERLAY:

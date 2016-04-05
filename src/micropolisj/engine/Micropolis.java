@@ -88,6 +88,7 @@ public class Micropolis
 	public int [][] policeMapEffect;//police stations reach- used for overlay graphs
 	
 	int [][] universityMap;  //universities- cleared and rebuilt each sim cycle
+	public int[][] universityMapEffect;//universities reach- used for overlay graphs
 
 	/** For each 8x8 section of city, this is an integer between 0 and 64,
 	 * with higher numbers being closer to the center of the city. */
@@ -123,6 +124,7 @@ public class Micropolis
 	int policeCount;
 	int fireStationCount;
 	int stadiumCount;
+	int universityCount;
 	int coalCount;
 	int nuclearCount;
 	int seaportCount;
@@ -179,7 +181,7 @@ public class Micropolis
 	int roadEffect = 32;
 	int policeEffect = 1000;
 	int fireEffect = 1000;
-	int universityEffect = 100;
+	int universityEffect = 20;
 
 	int cashFlow; //net change in totalFunds in previous year
 
@@ -250,7 +252,8 @@ public class Micropolis
 		fireRate = new int[smY][smX];
 		comRate = new int[smY][smX];
 
-		universityMap = new int[hY][hX];		
+		universityMap = new int[hY][hX];	
+		universityMapEffect = new int[hY][hX];
 		
 		centerMassX = hX;
 		centerMassY = hY;
@@ -539,6 +542,7 @@ public class Micropolis
 		policeCount = 0;
 		fireStationCount = 0;
 		stadiumCount = 0;
+		universityCount = 0;
 		coalCount = 0;
 		nuclearCount = 0;
 		seaportCount = 0;
@@ -851,6 +855,12 @@ public class Micropolis
 			}
 		}
 
+		for (int sy = 0; sy < universityMap.length; sy++) {
+			for (int sx = 0; sx < universityMap[sy].length; sx++) {
+				universityMapEffect[sy][sx] = universityMap[sy][sx];
+			}
+		}
+
 		int count = 0;
 		int sum = 0;
 		int cmax = 0;
@@ -864,6 +874,10 @@ public class Micropolis
 					z -= policeMap[hy/4][hx/4];
 					z = Math.min(250, z);
 					z = Math.max(0, z);
+
+					// adds university to crime value
+					z += universityMap[hy][hx];
+
 					crimeMem[hy][hx] = z;
 
 					sum += z;
@@ -1476,6 +1490,7 @@ public class Micropolis
 		bb.put("STADIUM_FULL", new MapScanner(this, MapScanner.B.STADIUM_FULL));
 		bb.put("AIRPORT", new MapScanner(this, MapScanner.B.AIRPORT));
 		bb.put("SEAPORT", new MapScanner(this, MapScanner.B.SEAPORT));
+		bb.put("UNIVERSITY", new MapScanner(this, MapScanner.B.UNIVERSITY));
 
 		this.tileBehaviors = bb;
 	}
@@ -2567,11 +2582,19 @@ public class Micropolis
 			if (resCap) {
 				sendMessage(MicropolisMessage.NEED_STADIUM);
 			}
+			resCap = (resPop > 400 && universityCount == 0);
+			if (resCap) {
+				sendMessage(MicropolisMessage.NEED_UNIVERSITY);
+			}
 			break;
 		case 28:
 			indCap = (indPop > 70 && seaportCount == 0);
 			if (indCap) {
 				sendMessage(MicropolisMessage.NEED_SEAPORT);
+			}
+			indCap = (indPop > 150 && universityCount == 0);
+			if (indCap) {
+				sendMessage(MicropolisMessage.NEED_UNIVERSITY);
 			}
 			break;
 		case 30:

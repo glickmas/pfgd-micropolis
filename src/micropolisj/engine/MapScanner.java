@@ -319,13 +319,16 @@ class MapScanner extends TileBehavior
 	void doUniversity()
 	{
 		boolean powerOn = checkZonePower();
+		city.universityCount++;
 		if ((city.cityTime % 16) == 0) {
 			repairZone(UNIVERSITY, 4);
 		}
 		int z;
 		if (powerOn) {
 			z = city.universityEffect;
-		} else {
+		} 
+		else 
+		{
 			z = 0;
 		}
 		

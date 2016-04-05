@@ -97,6 +97,7 @@ public class CityEval
 		z += engine.policeCount * 1000;
 		z += engine.fireStationCount * 1000;
 		z += engine.hospitalCount * 400;
+		z += engine.universityCount * 2000;
 		z += engine.stadiumCount * 3000;
 		z += engine.seaportCount * 5000;
 		z += engine.airportCount * 10000;
